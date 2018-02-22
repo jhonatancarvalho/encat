@@ -7,7 +7,7 @@ addons:
   sonarcloud:
     organization: "jhonatancarvalho-github"
     token:
-      secure: $SONAR_TOKEN
+      secure: e38f289fd361e6741dad6f8b0b1d9dc1473df67b
 script:
   - mvn test
   - sonar-scanner
