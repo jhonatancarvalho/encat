@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Opcao implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,6 +26,7 @@ public class Opcao implements Serializable {
 	
 	private Long quantidadeVotos;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="enquete_id")
 	private Enquete enquete;

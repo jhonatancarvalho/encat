@@ -16,7 +16,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Enquete implements Serializable {
@@ -30,7 +29,6 @@ public class Enquete implements Serializable {
 	@Length(min=5, max=80, message="O tamanho da pergunta deve ser entre 5 e 80 caracteres")
 	private String pergunta;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy="enquete", cascade=CascadeType.ALL)
 	private List<Opcao> opcoes = new ArrayList<>();
 	
