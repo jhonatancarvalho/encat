@@ -3,6 +3,7 @@ jdk:
   - oraclejdk8
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn sonar:sonar \ -Dsonar.organization=jhonatancarvalho-github \ -Dsonar.host.url=https://sonarcloud.io \ -Dsonar.login=fb6b76ba2b05734f937d14751ed76f752280491f
 script:
   - mvn test
 cache:
