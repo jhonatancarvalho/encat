@@ -1,0 +1,7 @@
+ignore:
+  - "src/main/java/br/com/jhonatan/encat/config/.*"
+  - "src/main/java/br/com/jhonatan/encat/domain/.*"
+  - "src/main/java/br/com/jhonatan/encat/dto/.*"
+  - "src/main/java/br/com/jhonatan/encat/repositories/.*"
+  - "src/main/java/br/com/jhonatan/encat/services/exceptions/.*"
+  - "src/main/java/br/com/jhonatan/encat/EncatApplocation.java"
