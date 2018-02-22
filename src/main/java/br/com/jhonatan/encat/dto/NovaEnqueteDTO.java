@@ -14,7 +14,7 @@ import br.com.jhonatan.encat.domain.Opcao;
 public class NovaEnqueteDTO {
 
 	@NotEmpty(message="Pergunta com preenchimento obrigatório")
-	@Length(min=5, max=80, message="O tamanho da pergunta deve ser entre 5 e 80 caracteres")
+	@Length(min=5, max=512, message="O tamanho da pergunta deve ser entre {min} e {max} caracteres")
 	private String pergunta;
 	
 	private List<String> opcoes = new ArrayList<>();

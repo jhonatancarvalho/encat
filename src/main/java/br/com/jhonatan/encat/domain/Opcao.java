@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,6 +23,7 @@ public class Opcao implements Serializable {
 	private Long id;
 	
 	@NotEmpty(message="Descrição com preenchimento obrigatório")
+	@Length(max=128, message="O tamanho da pergunta deve ter no máximo {max} caracteres")
 	private String descricao;
 	
 	private Long quantidadeVotos;
