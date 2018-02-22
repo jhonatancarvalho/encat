@@ -1,11 +1,13 @@
 package br.com.jhonatan.encat.services;
 
+import static br.com.jhonatan.encat.builders.EnqueteBuilder.umaEnquete;
+import static br.com.jhonatan.encat.builders.OpcaoBuilder.umaOpcao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,8 @@ import org.mockito.MockitoAnnotations;
 import br.com.jhonatan.encat.domain.Enquete;
 import br.com.jhonatan.encat.domain.Opcao;
 import br.com.jhonatan.encat.repositories.EnqueteRepository;
+import br.com.jhonatan.encat.services.exceptions.EnqueteException;
+import br.com.jhonatan.encat.services.exceptions.OpcoesEnqueteException;
 
 public class EnqueteServiceTest {
 
@@ -25,6 +29,9 @@ public class EnqueteServiceTest {
 	@Mock
 	private EnqueteRepository enqueteRepository;
 	
+	@Mock
+	private OpcaoService opcaoService;
+	
 	@Before
 	public void setup(){
 		MockitoAnnotations.initMocks(this);
@@ -32,12 +39,7 @@ public class EnqueteServiceTest {
 	
 	@Test
 	public void deveSalvarEnquete() {
-		final Enquete enquete = new Enquete(null, "Você gosta de gatos?", new Date());
-		
-		final Opcao opcao1 = new Opcao(1L, "SIM", 0L, enquete);
-		final Opcao opcao2 = new Opcao(2L, "NAO", 0L, enquete);
-		
-		enquete.setOpcoes(Arrays.asList(opcao1, opcao2));
+		final Enquete enquete = umaEnquete().agora();
 		
 		when(enqueteRepository.save(enquete)).thenReturn(enquete);
 		
@@ -45,4 +47,41 @@ public class EnqueteServiceTest {
 		
 		assertThat(enqueteSalva.getPergunta(), is("Você gosta de gatos?"));
 	}
+	
+	@Test(expected = EnqueteException.class)
+	public void naoDeveSalvarEnqueteSemEnquete() {
+		enqueteService.save(null);
+	}
+	
+	@Test(expected = EnqueteException.class)
+	public void naoDeveSalvarEnqueteComIdPreenchido() {
+		final Enquete enquete = umaEnquete().comId(1L).agora();
+	
+		enqueteService.save(enquete);
+	}
+	
+	@Test(expected = OpcoesEnqueteException.class)
+	public void naoDeveSalvarEnqueteSemOpcoes() {
+		final Enquete enquete = umaEnquete().comOpcoes(null).agora();
+		
+		enqueteService.save(enquete);
+	}
+	
+	@Test(expected = OpcoesEnqueteException.class)
+	public void naoDeveSalvarEnqueteApenasComUmaOpcao() {
+		final Enquete enquete = umaEnquete().comOpcoes(Arrays.asList(umaOpcao().agora())).agora();
+		
+		enqueteService.save(enquete);
+	}
+	
+	@Test(expected = OpcoesEnqueteException.class)
+	public void naoDeveSalvarEnqueteComOpcaoComIdPreenchido() {
+		final List<Opcao> opcoes = Arrays.asList(
+				umaOpcao().agora(),
+				umaOpcao().comId(1L).agora());
+		final Enquete enquete = umaEnquete().comOpcoes(opcoes).agora();
+		
+		enqueteService.save(enquete);
+	}
+	
 }

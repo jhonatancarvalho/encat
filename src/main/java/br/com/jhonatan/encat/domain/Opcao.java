@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class Opcao implements Serializable {
@@ -19,10 +19,11 @@ public class Opcao implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotEmpty(message="Descrição com preenchimento obrigatório")
 	private String descricao;
+	
 	private Long quantidadeVotos;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="enquete_id")
 	private Enquete enquete;
