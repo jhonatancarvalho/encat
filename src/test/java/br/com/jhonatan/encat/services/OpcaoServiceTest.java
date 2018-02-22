@@ -18,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import br.com.jhonatan.encat.domain.Opcao;
 import br.com.jhonatan.encat.repositories.OpcaoRepository;
-import br.com.jhonatan.encat.services.exceptions.OpcaoException;
+import br.com.jhonatan.encat.services.exceptions.ObjectNotFoundException;
 
 public class OpcaoServiceTest {
 
@@ -59,7 +59,7 @@ public class OpcaoServiceTest {
 		assertThat(opcao.getQuantidadeVotos(), is(1L));
 	}
 	
-	@Test(expected = OpcaoException.class)
+	@Test(expected = ObjectNotFoundException.class)
 	public void naoDeveVotarSemOpcao() {
 		Opcao opcao = umaOpcao().comId(1L).agora();
 		
@@ -78,7 +78,7 @@ public class OpcaoServiceTest {
 		assertThat(opcao.getId(), is(1L));
 	}
 	
-	@Test(expected = OpcaoException.class)
+	@Test(expected = ObjectNotFoundException.class)
 	public void naoDeveRetornarOpcaoVaziaPorId() {
 		final Opcao opcao = umaOpcao().comId(1L).agora();
 		

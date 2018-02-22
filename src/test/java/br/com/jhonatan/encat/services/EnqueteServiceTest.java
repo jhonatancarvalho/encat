@@ -22,8 +22,8 @@ import org.springframework.data.domain.Sort.Direction;
 import br.com.jhonatan.encat.domain.Enquete;
 import br.com.jhonatan.encat.domain.Opcao;
 import br.com.jhonatan.encat.repositories.EnqueteRepository;
-import br.com.jhonatan.encat.services.exceptions.EnqueteException;
-import br.com.jhonatan.encat.services.exceptions.OpcoesEnqueteException;
+import br.com.jhonatan.encat.services.exceptions.InvalidArgumentException;
+import br.com.jhonatan.encat.services.exceptions.ObjectNotFoundException;
 
 public class EnqueteServiceTest {
 
@@ -52,33 +52,33 @@ public class EnqueteServiceTest {
 		assertThat(enqueteSalva.getPergunta(), is("Você gosta de gatos?"));
 	}
 	
-	@Test(expected = EnqueteException.class)
+	@Test(expected = InvalidArgumentException.class)
 	public void naoDeveSalvarEnqueteSemEnquete() {
 		enqueteService.save(null);
 	}
 	
-	@Test(expected = EnqueteException.class)
+	@Test(expected = InvalidArgumentException.class)
 	public void naoDeveSalvarEnqueteComIdPreenchido() {
 		final Enquete enquete = umaEnquete().comId(1L).agora();
 	
 		enqueteService.save(enquete);
 	}
 	
-	@Test(expected = OpcoesEnqueteException.class)
+	@Test(expected = InvalidArgumentException.class)
 	public void naoDeveSalvarEnqueteSemOpcoes() {
 		final Enquete enquete = umaEnquete().comOpcoes(null).agora();
 		
 		enqueteService.save(enquete);
 	}
 	
-	@Test(expected = OpcoesEnqueteException.class)
+	@Test(expected = InvalidArgumentException.class)
 	public void naoDeveSalvarEnqueteApenasComUmaOpcao() {
 		final Enquete enquete = umaEnquete().comOpcoes(Arrays.asList(umaOpcao().agora())).agora();
 		
 		enqueteService.save(enquete);
 	}
 	
-	@Test(expected = OpcoesEnqueteException.class)
+	@Test(expected = InvalidArgumentException.class)
 	public void naoDeveSalvarEnqueteComOpcaoComIdPreenchido() {
 		final List<Opcao> opcoes = Arrays.asList(
 				umaOpcao().agora(),
@@ -98,7 +98,7 @@ public class EnqueteServiceTest {
 		assertThat(enquete.getId(), is(1L));
 	}
 	
-	@Test(expected = EnqueteException.class)
+	@Test(expected = ObjectNotFoundException.class)
 	public void naoDeveRetornarEnqueteVaziaPorId() {
 		final Enquete enquete = umaEnquete().comId(1L).agora();
 		

@@ -9,5 +9,5 @@ public class EncatApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EncatApplication.class, args);
 	}
-	
+
 }

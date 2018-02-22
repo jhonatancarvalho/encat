@@ -32,7 +32,7 @@ public class Enquete implements Serializable {
 	@OneToMany(mappedBy="enquete", cascade=CascadeType.ALL)
 	private List<Opcao> opcoes = new ArrayList<>();
 	
-	@JsonFormat(pattern="dd/MM/yyyy hh:mm")
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date dataCriacao;
 
 	public Enquete() {

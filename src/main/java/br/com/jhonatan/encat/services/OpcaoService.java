@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.jhonatan.encat.domain.Opcao;
 import br.com.jhonatan.encat.repositories.OpcaoRepository;
-import br.com.jhonatan.encat.services.exceptions.OpcaoException;
+import br.com.jhonatan.encat.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class OpcaoService {
@@ -19,7 +19,7 @@ public class OpcaoService {
 	public Opcao find(Long id) {
 		final Opcao opcao = opcaoRepository.findOne(id);
 		if (Objects.isNull(opcao)) {
-			throw new OpcaoException("Não foi encontrado a opção com id: " + id);
+			throw new ObjectNotFoundException("Não foi encontrado a opção com id: " + id);
 		}
 		
 		return opcao;
@@ -30,10 +30,7 @@ public class OpcaoService {
 	}
 
 	public Opcao adicionarVoto(Long opcaoId) {
-		final Opcao opcao = opcaoRepository.findOne(opcaoId);
-		if (Objects.isNull(opcao)) {
-			throw new OpcaoException("Opção não encontrada");
-		}
+		final Opcao opcao = find(opcaoId);
 		
 		opcao.setQuantidadeVotos(opcao.getQuantidadeVotos() + 1);
 		opcaoRepository.save(opcao);

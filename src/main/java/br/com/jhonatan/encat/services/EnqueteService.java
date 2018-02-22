@@ -1,5 +1,6 @@
 package br.com.jhonatan.encat.services;
 
+import java.util.Date;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.jhonatan.encat.domain.Enquete;
+import br.com.jhonatan.encat.domain.Opcao;
 import br.com.jhonatan.encat.repositories.EnqueteRepository;
-import br.com.jhonatan.encat.services.exceptions.EnqueteException;
-import br.com.jhonatan.encat.services.exceptions.OpcoesEnqueteException;
+import br.com.jhonatan.encat.services.exceptions.InvalidArgumentException;
+import br.com.jhonatan.encat.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class EnqueteService {
@@ -25,7 +27,7 @@ public class EnqueteService {
 	public Enquete find(Long id) {
 		final Enquete enquete = enqueteRepository.findOne(id);
 		if (Objects.isNull(enquete)) {
-			throw new EnqueteException("Não foi encontrado a enquete com id: " + id);
+			throw new ObjectNotFoundException("Não foi encontrado a enquete com id: " + id);
 		}
 		
 		return enquete;
@@ -33,31 +35,39 @@ public class EnqueteService {
 	
 	public Enquete save(Enquete enquete) {
 		validaSalvarEnquete(enquete);
+		
+		enquete.setDataCriacao(new Date());
 		final Enquete enqueteSalva = enqueteRepository.save(enquete);
+		
+		for (Opcao opcao : enqueteSalva.getOpcoes()) {
+			opcao.setQuantidadeVotos(0L);
+			opcao.setEnquete(enqueteSalva);
+		}
 		opcaoService.save(enqueteSalva.getOpcoes());
+		
 		return enqueteSalva;
 	}
 
 	private void validaSalvarEnquete(Enquete enquete) {
 		if (Objects.isNull(enquete)) {
-			throw new EnqueteException("Não é possivel salvar uma enquete nula");
+			throw new InvalidArgumentException("Não é possivel salvar uma enquete nula");
 		}
 		
 		if (Objects.nonNull(enquete.getId())) {
-			throw new EnqueteException("Não é possivel salvar uma enquete com id preenchido");
+			throw new InvalidArgumentException("Não é possivel salvar uma enquete com id preenchido");
 		}
 		
 		if (Objects.isNull(enquete.getOpcoes())) {
-			throw new OpcoesEnqueteException("Não é possivel criar uma enquete sem opções");
+			throw new InvalidArgumentException("Não é possivel criar uma enquete sem opções");
 		}
 		
 		if (enquete.getOpcoes().size() <= 1) {
-			throw new OpcoesEnqueteException("A enquete deve ter duas ou mais opções");
+			throw new InvalidArgumentException("A enquete deve ter duas ou mais opções");
 		}
 		
 		boolean isTemOpcaoComId = enquete.getOpcoes().stream().anyMatch(opcao -> Objects.nonNull(opcao.getId()));
 		if (isTemOpcaoComId) {
-			throw new OpcoesEnqueteException("Não é possivel salvar opções com id preenchido");
+			throw new InvalidArgumentException("Não é possivel salvar opções com id preenchido");
 		}
 	}
 	
