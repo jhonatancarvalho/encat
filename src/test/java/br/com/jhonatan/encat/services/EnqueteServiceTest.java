@@ -14,6 +14,10 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 
 import br.com.jhonatan.encat.domain.Enquete;
 import br.com.jhonatan.encat.domain.Opcao;
@@ -84,4 +88,34 @@ public class EnqueteServiceTest {
 		enqueteService.save(enquete);
 	}
 	
+	@Test
+	public void deveBuscarEnquetePorId() {
+		Enquete enquete = umaEnquete().comId(1L).agora();
+		
+		when(enqueteRepository.findOne(enquete.getId())).thenReturn(enquete);
+		enquete = enqueteService.find(enquete.getId());
+		
+		assertThat(enquete.getId(), is(1L));
+	}
+	
+	@Test(expected = EnqueteException.class)
+	public void naoDeveRetornarEnqueteVaziaPorId() {
+		final Enquete enquete = umaEnquete().comId(1L).agora();
+		
+		enqueteService.find(enquete.getId());
+	}
+	
+	@Test
+	public void deveBuscarEnquetesPaginadas() {
+		final List<Enquete> enquetes = Arrays.asList(
+				umaEnquete().agora(),
+				umaEnquete().agora());
+		final PageRequest pageRequest = new PageRequest(0, 24, Direction.ASC, "dataCriacao");
+		final Page<Enquete> enquetesPaginadas = new PageImpl<>(enquetes);
+		when(enqueteRepository.findAll(pageRequest)).thenReturn(enquetesPaginadas);
+		
+		final Page<Enquete> enquetesPage = enqueteService.findPage(0, 24, "ASC", "dataCriacao");
+		
+		assertThat(enquetesPage.getSize(), is(0));
+	}
 }
