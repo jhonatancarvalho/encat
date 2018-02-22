@@ -7,10 +7,10 @@ addons:
   sonarcloud:
     organization: "jhonatancarvalho-github"
     token:
-      secure: "Yr4xFXmoTsY2TvFhWuvDPkJLY996kg8m/x3wBwGU+Bp5/EhZP54UWFVH8CNrEoW27Yi5O6hhwhAJZwpeHHKo05pVZqgD4vU092cxx0LaAM/y7CDL70CeTnBeN7aIdGqK3Yy3DNbntcNfggvY6XDaCSzd8ouVlBQPPil6iQ0JVSIIgy7ltQu4V2gXEhvwyz7y8hnVjibll+dO0KI9UkNkreFTep59NecocH8+KkBSfelpKW9Gt6HjyQJfm1e3vRaEANAhDFbMvB9v++Z5OyOFKVDYslewhtDdXLxRQLnjyLGfCqqT+0ucNNKB/PXlH0VVM0OpjLhSAQgAt9n1LU57UUtcqjoAQ/mjSUo55AjMuBjHTZEZjHh6Pl2pKXYMFxHHthkI4i+fXLRDm+278dZX1kHabpqHcyZPwr5GU+x22cAj4VMZiYIVLpaX/TAJQEpkxz6r+Bcg6P7Q7/ooAkFxaUefY6Wr1C6SRK3O0AQIpTN/XBQfQp7+ss6C7tuKQIePORGBwRJN58TggrEDc6z6MpJAWMGMS548OiLIvcDKj1gJSAj2CvlFHqfR+t6iEDk296uAx4SffRhckZuOQFYS6eF1DUNmGVDloy/u2qiYcucjh5bCqRjOVuQ08onUx/RwRLJkxFQLKPSF/9653rpQPJbVB1aBgNuxibcboO5awgs="
+      secure: $SONAR_TOKEN
 script:
   - mvn test
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - sonar-scanner
 cache:
   directories:
   - $HOME/.m2
