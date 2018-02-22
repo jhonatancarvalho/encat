@@ -12,9 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -25,8 +22,6 @@ public class Enquete implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty(message="Pergunta com preenchimento obrigatório")
-	@Length(min=5, max=80, message="O tamanho da pergunta deve ser entre 5 e 80 caracteres")
 	private String pergunta;
 	
 	@OneToMany(mappedBy="enquete", cascade=CascadeType.ALL)

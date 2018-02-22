@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.jhonatan.encat.domain.Enquete;
+import br.com.jhonatan.encat.dto.NovaEnqueteDTO;
 import br.com.jhonatan.encat.services.EnqueteService;
 import br.com.jhonatan.encat.services.OpcaoService;
 
@@ -37,8 +38,9 @@ public class EnqueteResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> save(@Valid @RequestBody Enquete novaEnquete) {
-		final Enquete enquete = enqueteService.save(novaEnquete);
+	public ResponseEntity<Void> save(@Valid @RequestBody NovaEnqueteDTO novaEnquete) {
+		final Enquete enquete = novaEnquete.toEnquete();
+		enqueteService.save(enquete);
 		final URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(enquete.getId()).toUri();
 		return ResponseEntity.created(uri).build();
