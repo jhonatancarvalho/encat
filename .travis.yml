@@ -10,9 +10,10 @@ addons:
       secure: e38f289fd361e6741dad6f8b0b1d9dc1473df67b
 script:
   - mvn test
-  - sonar-scanner
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 cache:
   directories:
   - $HOME/.m2
+  - $HOME/.sonar
 after_success:
   - bash <(curl -s https://codecov.io/bash)
