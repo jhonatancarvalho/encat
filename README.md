@@ -7,6 +7,8 @@ Webservice para criação de enquetes em Java.
 
 Disponível em: https://encat-api.herokuapp.com/
 
+Swagger: https://encat-api.herokuapp.com/swagger-ui.html
+
 
 ## Endpoints
 
