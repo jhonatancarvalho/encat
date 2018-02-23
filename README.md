@@ -26,4 +26,7 @@ __[POST]__ https://encat-api.herokuapp.com/enquetes - Cadastra uma nova enquete,
 __[GET]__ https://encat-api.herokuapp.com/enquetes/page - Retorna as enquetes paginadas, com possibilidate de inserção dos parâmetros page, size, direction e orderBy.
 
 
-__[PUT]__ https://encat-api.herokuapp.com/enquetes/votar/{opcaoId} -Efetua o voto em uma opção da enquete.
+__[PUT]__ https://encat-api.herokuapp.com/enquetes/votar/{opcaoId} - Efetua o voto em uma opção da enquete.
+
+## License
+MIT
