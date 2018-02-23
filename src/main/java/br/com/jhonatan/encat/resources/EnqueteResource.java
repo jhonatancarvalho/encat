@@ -46,8 +46,8 @@ public class EnqueteResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping("/votar/{id}")
-	public ResponseEntity<Void> votar(@PathVariable(name="id") Long opcaoId) {
+	@PutMapping("/votar/{opcaoId}")
+	public ResponseEntity<Void> votar(Long opcaoId) {
 		opcaoService.adicionarVoto(opcaoId);
 		return ResponseEntity.noContent().build();
 	}
